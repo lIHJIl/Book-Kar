@@ -1,0 +1,6 @@
+{
+  "name": "Book_kar.",
+  "description": "An elegant event ticketing platform for concerts, theatre, sports, and festivals across India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
