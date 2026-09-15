@@ -4,11 +4,14 @@ import { SeatMap } from './SeatMap';
 import { GeneralAdmissionSelector } from './GeneralAdmissionSelector';
 import { OrderSummaryPanel } from './OrderSummaryPanel';
 import { ArrowLeft, Calendar, Clock, MapPin, Info } from 'lucide-react';
+import { HeritageImage } from './HeritageImage';
+import { getCategoryTheme } from '../utils/categoryTheme';
 
 export const EventDetail: React.FC = () => {
   const { activeEvent, backToDiscovery } = useBooking();
 
   if (!activeEvent) return null;
+  const catTheme = getCategoryTheme(activeEvent.category);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -16,7 +19,7 @@ export const EventDetail: React.FC = () => {
       <div className="mb-6">
         <button
           onClick={backToDiscovery}
-          className="group inline-flex items-center gap-2 text-xs font-medium text-theme-muted hover:text-theme-ink focus:outline-none transition-colors"
+          className="group inline-flex items-center gap-2 rounded-xl py-1.5 px-2 -ml-2 text-xs font-medium text-theme-muted hover:text-theme-ink hover:bg-theme-surface/70 focus:outline-none transition-colors"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" strokeWidth={1.5} />
           <span>Return to seasonal repertoire</span>
@@ -29,18 +32,19 @@ export const EventDetail: React.FC = () => {
         <div className="flex-1 w-full space-y-10">
           {/* Header & Featured Media */}
           <div className="space-y-6">
-            <div className="overflow-hidden rounded-xl bg-theme-border/40 aspect-[21/9] sm:aspect-[2.4/1] w-full">
-              <img
+            <div className="overflow-hidden rounded-[2px] bg-theme-border/40 aspect-[21/9] sm:aspect-[2.4/1] w-full border border-theme-border">
+              <HeritageImage
                 src={activeEvent.heroImage}
                 alt={activeEvent.title}
-                referrerPolicy="no-referrer"
+                priority
+                containerClassName="h-full w-full"
                 className="h-full w-full object-cover object-center"
               />
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <span className="rounded-[2px] border border-theme-border px-2 py-0.5 text-xs font-medium text-theme-muted capitalize">
+                <span className={`rounded-[2px] border px-2 py-0.5 text-xs font-medium uppercase tracking-wider font-mono ${catTheme.badgeClass}`}>
                   {activeEvent.category}
                 </span>
                 <span className="text-xs text-theme-muted">

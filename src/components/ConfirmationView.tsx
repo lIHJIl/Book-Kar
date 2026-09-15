@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { useBooking } from '../context/BookingContext';
-import { Check, Calendar, MapPin, Download, QrCode, Sparkles, Award } from 'lucide-react';
+import { Check, Calendar, MapPin, Download, QrCode, Sparkles } from 'lucide-react';
+import { HeritageImage } from './HeritageImage';
+import { getCategoryTheme } from '../utils/categoryTheme';
 
 export const ConfirmationView: React.FC = () => {
   const { confirmedTicket, resetBooking } = useBooking();
@@ -11,6 +13,7 @@ export const ConfirmationView: React.FC = () => {
   if (!confirmedTicket) return null;
 
   const { event, guest, ticketNumber, issuedAt, entryGate, total, seats, gaSelection } = confirmedTicket;
+  const catTheme = getCategoryTheme(event.category);
 
   return (
     <div className="relative mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -40,7 +43,7 @@ export const ConfirmationView: React.FC = () => {
               }}
               className="absolute h-2 w-2 rounded-full"
               style={{
-                backgroundColor: i % 3 === 0 ? '#C7A06B' : i % 3 === 1 ? '#E48858' : '#657C60',
+                backgroundColor: i % 3 === 0 ? '#C7A06B' : i % 3 === 1 ? '#B84A39' : '#3C6E47',
               }}
             />
           ))}
@@ -75,28 +78,45 @@ export const ConfirmationView: React.FC = () => {
         initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="relative mx-auto max-w-xl overflow-hidden rounded-xl border border-theme-border bg-theme-surface shadow-2xl transition-colors"
+        style={{ borderRadius: '2px' }}
+        className="relative mx-auto max-w-xl overflow-hidden border border-theme-border bg-theme-surface shadow-2xl transition-colors"
       >
         {/* Physical Ticket Header with Image */}
-        <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-black">
-          <img
+        <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-black">
+          <HeritageImage
             src={event.heroImage}
             alt={event.title}
-            referrerPolicy="no-referrer"
-            className="h-full w-full object-cover object-center brightness-75 contrast-105"
+            priority
+            containerClassName="h-full w-full"
+            className="h-full w-full object-cover object-center brightness-70 contrast-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/20" />
 
-          {/* Golden Royal Stamp Badge */}
+          {/* Authentic Rajasthani Wax Seal / Heritage Stamp */}
           <motion.div
-            initial={{ scale: 2.2, rotate: -30, opacity: 0 }}
-            animate={{ scale: 1, rotate: -8, opacity: 1 }}
-            transition={{ delay: 0.25, type: 'spring', stiffness: 350, damping: 20 }}
-            className="absolute top-12 right-6 rounded-md border-2 border-[#C7A06B]/80 bg-black/60 px-3 py-1 text-center backdrop-blur-xs shadow-lg"
+            initial={{ scale: 2.4, rotate: -35, opacity: 0 }}
+            animate={{ scale: 1, rotate: -12, opacity: 1 }}
+            transition={{ delay: 0.28, type: 'spring', stiffness: 320, damping: 18 }}
+            className="absolute top-8 right-5 pointer-events-none select-none drop-shadow-xl"
           >
-            <div className="flex items-center gap-1 text-[10px] font-mono tracking-widest text-[#C7A06B] font-bold uppercase">
-              <Award className="h-3 w-3" />
-              <span>AUTHENTIC PASS</span>
+            <div className="relative flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full border-2 border-dashed border-[#C7A06B] bg-gradient-to-br from-[#8E2838]/90 via-[#B84A39]/95 to-[#54121B]/95 p-1.5 shadow-2xl backdrop-blur-xs">
+              {/* Inner embossed concentric ring */}
+              <div className="flex h-full w-full flex-col items-center justify-center rounded-full border border-[#F3F1EA]/60 text-center p-1 text-[#F3F1EA]">
+                <span className="font-mono text-[7px] sm:text-[8px] font-bold tracking-widest uppercase text-[#F3F1EA]/90 leading-tight">
+                  राजकीय मुद्रा
+                </span>
+                <span className="font-display text-[9px] sm:text-[10px] font-semibold tracking-wider text-[#C7A06B] uppercase leading-none my-0.5">
+                  OFFICIALLY SEALED
+                </span>
+                <div className="my-0.5 flex items-center justify-center gap-1 text-[#C7A06B]">
+                  <span className="h-[1px] w-3 bg-[#C7A06B]" />
+                  <Sparkles className="h-2.5 w-2.5" />
+                  <span className="h-[1px] w-3 bg-[#C7A06B]" />
+                </div>
+                <span className="font-mono text-[7px] sm:text-[8px] text-[#F3F1EA]/80 tracking-tighter">
+                  RAJASTHAN HERITAGE
+                </span>
+              </div>
             </div>
           </motion.div>
 
@@ -105,11 +125,11 @@ export const ConfirmationView: React.FC = () => {
               <span className="h-2 w-2 rounded-[2px] bg-[#C7A06B]" />
               <span className="font-medium tracking-wide font-mono text-[11px]">BOOK_KAR. OFFICIAL PASS</span>
             </div>
-            <span className="font-mono text-[11px] text-[#C7A06B]">{ticketNumber}</span>
+            <span className="font-mono text-[11px] text-[#C7A06B] font-semibold">{ticketNumber}</span>
           </div>
 
-          <div className="absolute bottom-4 left-4 right-4 text-[#F3F1EA]">
-            <span className="text-[11px] uppercase tracking-wider font-mono text-[#C7A06B]">
+          <div className="absolute bottom-4 left-4 right-4 text-[#F3F1EA] pr-28">
+            <span className={`inline-block rounded-[2px] border px-2 py-0.5 text-[10px] uppercase tracking-wider font-mono mb-1 ${catTheme.badgeClass}`}>
               {event.category}
             </span>
             <h2 className="font-display text-2xl font-normal italic tracking-tight text-[#F3F1EA] line-clamp-1">
@@ -189,6 +209,15 @@ export const ConfirmationView: React.FC = () => {
           </div>
         </div>
 
+        {/* Decorative Rajasthani Jali Lattice Line */}
+        <div className="flex items-center justify-center px-6 py-1 opacity-40 overflow-hidden" aria-hidden="true">
+          <div className="flex gap-2">
+            {[...Array(12)].map((_, idx) => (
+              <span key={idx} className="h-1.5 w-1.5 rotate-45 border border-theme-accent" />
+            ))}
+          </div>
+        </div>
+
         {/* Perforated Tear Line with Simulated Notches */}
         <div className="relative flex items-center justify-between px-2 bg-theme-surface">
           <div className="h-6 w-3 rounded-r-full border-r border-y border-theme-border bg-theme-bg" />
@@ -231,7 +260,7 @@ export const ConfirmationView: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Action CTAs */}
+      {/* Action CTAs: soft interactive rounded-xl */}
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
         <motion.button
           type="button"

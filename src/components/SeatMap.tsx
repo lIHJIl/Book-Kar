@@ -1,19 +1,96 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'motion/react';
 import { Seat, SeatSection, SeatTier } from '../types';
-import { useBooking } from '../context/BookingContext';
+import { useCart } from '../context/CartContext';
 
 interface SeatMapProps {
   sections: SeatSection[];
   tiers?: SeatTier[];
 }
 
-export const SeatMap: React.FC<SeatMapProps> = ({ sections, tiers }) => {
-  const { selectedSeats, toggleSeat, inlineError } = useBooking();
-  const shouldReduceMotion = useReducedMotion();
-  const [hoveredSeat, setHoveredSeat] = useState<Seat | null>(null);
+interface SeatButtonProps {
+  seat: Seat;
+  isSelected: boolean;
+  onToggle: (seat: Seat) => void;
+  shouldReduceMotion: boolean;
+}
 
-  const isSeatSelected = (seatId: string) => selectedSeats.some((s) => s.id === seatId);
+const SeatButton = React.memo<SeatButtonProps>(({ seat, isSelected, onToggle, shouldReduceMotion }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const isSold = seat.status === 'sold';
+
+  return (
+    <div className="relative">
+      <motion.button
+        type="button"
+        disabled={isSold}
+        onClick={() => onToggle(seat)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        aria-label={`Row ${seat.row} Seat ${seat.number}, ₹${seat.price.toLocaleString('en-IN')}, ${
+          isSold ? 'Sold out' : isSelected ? 'Selected' : 'Available'
+        }`}
+        aria-pressed={isSelected}
+        whileHover={isSold ? undefined : { scale: 1.18, y: -2 }}
+        whileTap={isSold ? undefined : { scale: 0.86 }}
+        animate={
+          shouldReduceMotion
+            ? undefined
+            : isSelected
+            ? { scale: [0.92, 1.12, 1] }
+            : { scale: 1 }
+        }
+        transition={{ duration: 0.18, ease: 'easeOut' }}
+        className={`relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-[2px] text-xs font-mono transition-colors duration-150 focus:outline-none focus:ring-1 focus:ring-theme-accent ${
+          isSold
+            ? 'cursor-not-allowed bg-theme-border/30 text-theme-muted/40'
+            : isSelected
+            ? 'bg-theme-accent text-white dark:text-[#111110] font-bold shadow-md shadow-theme-accent/20'
+            : 'border border-theme-border bg-theme-surface text-theme-ink hover:border-theme-accent'
+        }`}
+      >
+        <span>{seat.number}</span>
+        {isSold && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="h-[1px] w-full rotate-45 bg-theme-muted/40" />
+          </span>
+        )}
+      </motion.button>
+
+      {/* Hover Tooltip */}
+      <AnimatePresence>
+        {isHovered && !isSold && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 whitespace-nowrap rounded-[2px] border border-theme-border bg-theme-ink px-2 py-1 text-[11px] font-mono text-theme-bg shadow-lg"
+          >
+            Row {seat.row}-{seat.number} • ₹{seat.price.toLocaleString('en-IN')}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}, (prev, next) => {
+  return (
+    prev.seat.id === next.seat.id &&
+    prev.isSelected === next.isSelected &&
+    prev.seat.status === next.seat.status &&
+    prev.shouldReduceMotion === next.shouldReduceMotion &&
+    prev.onToggle === next.onToggle
+  );
+});
+SeatButton.displayName = 'SeatButton';
+
+export const SeatMap: React.FC<SeatMapProps> = ({ sections, tiers }) => {
+  const { selectedSeats, toggleSeat, inlineError } = useCart();
+  const shouldReduceMotion = Boolean(useReducedMotion());
+
+  const selectedSeatIds = React.useMemo(() => {
+    return new Set(selectedSeats.map((s) => s.id));
+  }, [selectedSeats]);
 
   return (
     <div className="w-full space-y-8">
@@ -81,65 +158,15 @@ export const SeatMap: React.FC<SeatMapProps> = ({ sections, tiers }) => {
 
                   {/* Seats across row */}
                   <div className="flex flex-1 items-center justify-center gap-1.5 sm:gap-2">
-                    {rowItem.seats.map((seat: Seat) => {
-                      const selected = isSeatSelected(seat.id);
-                      const isSold = seat.status === 'sold';
-
-                      return (
-                        <div key={seat.id} className="relative">
-                          <motion.button
-                            type="button"
-                            disabled={isSold}
-                            onClick={() => toggleSeat(seat)}
-                            onMouseEnter={() => setHoveredSeat(seat)}
-                            onMouseLeave={() => setHoveredSeat(null)}
-                            aria-label={`Row ${seat.row} Seat ${seat.number}, ₹${seat.price.toLocaleString('en-IN')}, ${
-                              isSold ? 'Sold out' : selected ? 'Selected' : 'Available'
-                            }`}
-                            aria-pressed={selected}
-                            whileHover={isSold ? undefined : { scale: 1.18, y: -2 }}
-                            whileTap={isSold ? undefined : { scale: 0.86 }}
-                            animate={
-                              shouldReduceMotion
-                                ? undefined
-                                : selected
-                                ? { scale: [0.92, 1.12, 1] }
-                                : { scale: 1 }
-                            }
-                            transition={{ duration: 0.18, ease: 'easeOut' }}
-                            className={`relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-[2px] text-xs font-mono transition-colors duration-150 focus:outline-none focus:ring-1 focus:ring-theme-accent ${
-                              isSold
-                                ? 'cursor-not-allowed bg-theme-border/30 text-theme-muted/40'
-                                : selected
-                                ? 'bg-theme-accent text-white dark:text-[#111110] font-bold shadow-md shadow-theme-accent/20'
-                                : 'border border-theme-border bg-theme-surface text-theme-ink hover:border-theme-accent'
-                            }`}
-                          >
-                            <span>{seat.number}</span>
-                            {isSold && (
-                              <span className="absolute inset-0 flex items-center justify-center">
-                                <span className="h-[1px] w-full rotate-45 bg-theme-muted/40" />
-                              </span>
-                            )}
-                          </motion.button>
-
-                          {/* Hover Tooltip */}
-                          <AnimatePresence>
-                            {hoveredSeat?.id === seat.id && !isSold && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 6, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 4, scale: 0.9 }}
-                                transition={{ duration: 0.15 }}
-                                className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 whitespace-nowrap rounded-[2px] border border-theme-border bg-theme-ink px-2 py-1 text-[11px] font-mono text-theme-bg shadow-lg"
-                              >
-                                Row {seat.row}-{seat.number} • ₹{seat.price.toLocaleString('en-IN')}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    })}
+                    {rowItem.seats.map((seat: Seat) => (
+                      <SeatButton
+                        key={seat.id}
+                        seat={seat}
+                        isSelected={selectedSeatIds.has(seat.id)}
+                        onToggle={toggleSeat}
+                        shouldReduceMotion={shouldReduceMotion}
+                      />
+                    ))}
                   </div>
 
                   <span className="w-5 text-center text-xs font-semibold text-theme-muted font-mono">

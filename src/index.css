@@ -8,6 +8,9 @@
     --color-muted: #8A8676;
     --color-border: #E5E2D8;
     --color-accent: #B8935A;
+    --color-terracotta: #B84A39;
+    --color-maroon: #8E2838;
+    --color-emerald: #3C6E47;
   }
 
   .dark {
@@ -17,6 +20,9 @@
     --color-muted: #8A8676;
     --color-border: #2B2A26;
     --color-accent: #C7A06B;
+    --color-terracotta: #D05D4A;
+    --color-maroon: #E06D80;
+    --color-emerald: #68B678;
   }
 
   body {
@@ -64,6 +70,18 @@
 
 .bg-theme-accent {
   background-color: var(--color-accent);
+}
+
+.text-theme-terracotta {
+  color: var(--color-terracotta);
+}
+
+.bg-theme-terracotta {
+  background-color: var(--color-terracotta);
+}
+
+.border-theme-terracotta {
+  border-color: var(--color-terracotta);
 }
 
 /* Specific geometry helpers */

@@ -324,7 +324,7 @@ export const CheckoutView: React.FC = () => {
                         if (formErrors.fullName) setFormErrors((p) => ({ ...p, fullName: '' }));
                       }}
                       placeholder="Aarav Sharma"
-                      className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
+                      className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
                     />
                     {formErrors.fullName && (
                       <p className="text-[11px] text-red-600 mt-1">{formErrors.fullName}</p>
@@ -345,7 +345,7 @@ export const CheckoutView: React.FC = () => {
                         if (formErrors.email) setFormErrors((p) => ({ ...p, email: '' }));
                       }}
                       placeholder="aarav.sharma@culture.in"
-                      className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
+                      className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
                     />
                     {formErrors.email && (
                       <p className="text-[11px] text-red-600 mt-1">{formErrors.email}</p>
@@ -366,7 +366,7 @@ export const CheckoutView: React.FC = () => {
                         if (formErrors.phone) setFormErrors((p) => ({ ...p, phone: '' }));
                       }}
                       placeholder="+91 98290 12345"
-                      className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
+                      className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
                     />
                     {formErrors.phone && (
                       <p className="text-[11px] text-red-600 mt-1">{formErrors.phone}</p>
@@ -468,7 +468,7 @@ export const CheckoutView: React.FC = () => {
                           if (formErrors.cardHolder) setFormErrors((p) => ({ ...p, cardHolder: '' }));
                         }}
                         placeholder="AARAV SHARMA"
-                        className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
+                        className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none transition-all"
                       />
                       {formErrors.cardHolder && (
                         <p className="text-[11px] text-red-600 mt-1">{formErrors.cardHolder}</p>
@@ -491,7 +491,7 @@ export const CheckoutView: React.FC = () => {
                           }}
                           placeholder="4000 1234 5678 9010"
                           maxLength={19}
-                          className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
+                          className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
                         />
                         <Lock className="absolute right-3 top-2.5 h-4 w-4 text-theme-muted pointer-events-none" strokeWidth={1.5} />
                       </div>
@@ -516,7 +516,7 @@ export const CheckoutView: React.FC = () => {
                           }}
                           placeholder="MM/YY"
                           maxLength={5}
-                          className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
+                          className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
                         />
                         {formErrors.expiry && (
                           <p className="text-[11px] text-red-600 mt-1">{formErrors.expiry}</p>
@@ -538,7 +538,7 @@ export const CheckoutView: React.FC = () => {
                           }}
                           placeholder="•••"
                           maxLength={4}
-                          className="w-full rounded-[2px] border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
+                          className="w-full rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-sm text-theme-ink placeholder-theme-muted focus:border-theme-accent focus:ring-1 focus:ring-theme-accent/30 focus:outline-none font-mono transition-all"
                         />
                         {formErrors.cvc && (
                           <p className="text-[11px] text-red-600 mt-1">{formErrors.cvc}</p>

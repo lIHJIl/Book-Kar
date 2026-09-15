@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { EventCategory } from '../types';
-import { useBooking } from '../context/BookingContext';
+import { useCatalog } from '../context/CatalogContext';
 
 const CATEGORIES: { id: EventCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All programs' },
@@ -12,7 +12,7 @@ const CATEGORIES: { id: EventCategory | 'all'; label: string }[] = [
 ];
 
 export const CategoryTicker: React.FC = () => {
-  const { categoryFilter, setCategoryFilter } = useBooking();
+  const { categoryFilter, setCategoryFilter } = useCatalog();
 
   return (
     <div className="w-full border-b border-theme-border bg-theme-bg overflow-x-auto scrollbar-none">
